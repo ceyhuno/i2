@@ -1,19 +1,10 @@
 import ikea_api
 import asyncio
 
-constants = ikea_api.Constants(country="de", language="de")
-
-print(f"constants {constants}")
-
-token_endpoint = ikea_api.Auth(constants).get_guest_token()
-
-token = ikea_api.run(token_endpoint)
-
-print(f"token {token}")
-
-
-
 async def main():
+    constants = ikea_api.Constants(country="de", language="de")
+    token_endpoint = ikea_api.Auth(constants).get_guest_token()
+    token = await ikea_api.run_async(token_endpoint)
     services = await ikea_api.get_delivery_services(
         constants=constants,
         token=...,
