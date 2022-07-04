@@ -17,22 +17,22 @@ cart.add_items({"30403571": 1})  # { item_code: quantity }
 
 order = ikea_api.OrderCapture(constants, token=token)
 
-cart_show = run(cart.show())
+cart_show = ikea_api.run(cart.show())
 
 items = ikea_api.convert_cart_to_checkout_items(cart_show)
 
-checkout_id = run(order.get_checkout(items))
+checkout_id = ikea_api.run(order.get_checkout(items))
 
-service_area_id = run(
+service_area_id = ikea_api.run(
     order.get_service_area(
         checkout_id,
         zip_code="10178",
     )
 )
 
-home_services = run(order.get_home_delivery_services(checkout_id, service_area_id))
+home_services = ikea_api.run(order.get_home_delivery_services(checkout_id, service_area_id))
 
-collect_services = run(
+collect_services = ikea_api.run(
     order.get_collect_delivery_services(checkout_id, service_area_id)
 )
 
