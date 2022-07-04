@@ -1,4 +1,5 @@
 import ikea_api
+from ikea_api.wrappers.parsers.order_capture import parse_delivery_services
 
 constants = ikea_api.Constants(country="de", language="de")
 
@@ -14,7 +15,7 @@ cart = ikea_api.Cart(constants, token=token)
 
 add_items_endpoint = cart.add_items({"30403571": 1})  # { item_code: quantity }
 
-ikea_api.run(add_items_endpoint)
+cart_response = ikea_api.run(add_items_endpoint)
 
 order = ikea_api.OrderCapture(constants, token=token)
 
@@ -33,10 +34,14 @@ service_area_id = ikea_api.run(
 
 home_services = ikea_api.run(order.get_home_delivery_services(checkout_id, service_area_id))
 
-collect_services = ikea_api.run(
-    order.get_collect_delivery_services(checkout_id, service_area_id)
+collect_services = ikea_api.run(order.get_collect_delivery_services(checkout_id, service_area_id))
+
+parsed_data = parse_delivery_services(
+    constants=constants,
+    home_response=home_services,
+    collect_response=collect_services,
 )
 
-print(f"collect_services {collect_services}")
+print(f"parsed_data {parsed_data}")
 
 
