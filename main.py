@@ -4,7 +4,9 @@ constants = ikea_api.Constants(country="de", language="de")
 
 print(f"constants {constants}")
 
-token = ikea_api.Auth(constants).get_guest_token()
+token_endpoint = ikea_api.Auth(constants).get_guest_token()
+
+ikea_api.run(token_endpoint)
 
 print(f"token {token}")
 
