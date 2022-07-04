@@ -6,7 +6,7 @@ print(f"constants {constants}")
 
 token_endpoint = ikea_api.Auth(constants).get_guest_token()
 
-ikea_api.run(token_endpoint)
+token = ikea_api.run(token_endpoint)
 
 print(f"token {token}")
 
