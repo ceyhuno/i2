@@ -6,6 +6,8 @@ token = ikea_api.Auth(constants).get_guest_token()
 
 import asyncio
 
+whatever = ""
+
 async def function(param) -> asyncio.coroutine:
     services = await ikea_api.get_delivery_services(
         constants=constants,
