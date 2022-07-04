@@ -42,6 +42,12 @@ parsed_data = parse_delivery_services(
     collect_response=collect_services,
 )
 
-print(f"parsed_data {parsed_data}")
+available = [p for p in parsed_data if p.is_available == True]
+home = [p for p in available if "HOME_DELIVERY" in p.type]
+collect = [p for p in available if "CLICK_COLLECT_STORE" in p.type]
+
+
+print(f"home {home}")
+print(f"collect {collect}")
 
 
