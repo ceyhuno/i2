@@ -11,7 +11,7 @@ cart = ikea_api.Cart(constants, token=token)
 
 add_items_endpoint = cart.add_items({"30403571": 1})  # { item_code: quantity }
 
-cart_response = ikea_api.run(add_items_endpoint)
+ikea_api.run(add_items_endpoint)
 
 order = ikea_api.OrderCapture(constants, token=token)
 
