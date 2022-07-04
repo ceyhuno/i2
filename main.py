@@ -2,7 +2,11 @@ import ikea_api
 
 constants = ikea_api.Constants(country="de", language="de")
 
+print(f"constants {constants}")
+
 token = ikea_api.Auth(constants).get_guest_token()
+
+print(f"token {token}")
 
 cart = ikea_api.Cart(constants, token=token)
 
