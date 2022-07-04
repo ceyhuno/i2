@@ -7,7 +7,7 @@ async def main():
     token = await ikea_api.run_async(token_endpoint)
     services = await ikea_api.get_delivery_services(
         constants=constants,
-        token=...,
+        token=token,
         items={
             "30403571": 1,
         },
