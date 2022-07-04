@@ -3,13 +3,9 @@ from ikea_api.wrappers.parsers.order_capture import parse_delivery_services
 
 constants = ikea_api.Constants(country="de", language="de")
 
-print(f"constants {constants}")
-
 token_endpoint = ikea_api.Auth(constants).get_guest_token()
 
 token = ikea_api.run(token_endpoint)
-
-print(f"token {token}")
 
 cart = ikea_api.Cart(constants, token=token)
 
