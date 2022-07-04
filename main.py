@@ -4,23 +4,32 @@ constants = ikea_api.Constants(country="de", language="de")
 
 token = ikea_api.Auth(constants).get_guest_token()
 
-import asyncio
+cart = ikea_api.Cart(constants, token=token)
 
-whatever = ""
+cart.add_items({"30403571": 1})  # { item_code: quantity }
 
-async def function(param) -> asyncio.coroutine:
-    services = await ikea_api.get_delivery_services(
-        constants=constants,
-        token=token,
-        items={
-            "30457903": 1,
-            "11111111": 2,  # invalid item that will be skipped
-        },
-        zip_code="101000",
+
+order = ikea_api.OrderCapture(constants, token=token)
+
+cart_show = run(cart.show())
+
+items = ikea_api.convert_cart_to_checkout_items(cart_show)
+
+checkout_id = run(order.get_checkout(items))
+
+service_area_id = run(
+    order.get_service_area(
+        checkout_id,
+        zip_code="10178",
     )
-    print(f"services.delivery_options {services.delivery_options}")
-    print(f"services.cannot_add {services.cannot_add}")
+)
 
+home_services = run(order.get_home_delivery_services(checkout_id, service_area_id))
 
-asyncio.run(function(whatever))
+collect_services = run(
+    order.get_collect_delivery_services(checkout_id, service_area_id)
+)
+
+print(f"collect_services {collect_services}")
+
 
