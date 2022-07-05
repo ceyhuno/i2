@@ -1,5 +1,17 @@
 import ikea_api
 from ikea_api.wrappers.parsers.order_capture import parse_delivery_services
+import requests
+import os
+
+bot_token = os.getenv('T')
+bot_chatID = os.getenv('C')
+item_id = os.getenv('P')
+zip_code = os.getenv('Z')
+
+def telegram_bot_sendtext(bot_message):
+   send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+   response = requests.get(send_text)
+   return response.json()
 
 constants = ikea_api.Constants(country="de", language="de")
 
@@ -9,9 +21,8 @@ token = ikea_api.run(token_endpoint)
 
 cart = ikea_api.Cart(constants, token=token)
 
-ikea_api.run(cart.clear())
+add_items_endpoint = cart.add_items({item_id: 1})  # { item_code: quantity }
 
-add_items_endpoint = cart.add_items({"30403571": 1})   # { item_code: quantity }
 ikea_api.run(add_items_endpoint)
 
 order = ikea_api.OrderCapture(constants, token=token)
@@ -25,7 +36,7 @@ checkout_id = ikea_api.run(order.get_checkout(items))
 service_area_id = ikea_api.run(
     order.get_service_area(
         checkout_id,
-        zip_code="10178",
+        zip_code=zip_code,
     )
 )
 
@@ -40,11 +51,9 @@ parsed_data = parse_delivery_services(
 )
 
 available = [p for p in parsed_data if p.is_available == True]
+
 home = [p for p in available if "HOME_DELIVERY" in p.type]
 collect = [p for p in available if "CLICK_COLLECT_STORE" in p.type]
 
-
-print(f"home {home}")
-print(f"collect {collect}")
-
-
+if home or collect:
+    telegram_bot_sendtext(f"🎉 Available: https://www.ikea.com/de/de/search/products/?q=${item_id}")
