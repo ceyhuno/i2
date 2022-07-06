@@ -15,6 +15,13 @@ def telegram_bot_sendtext(bot_message):
 
 constants = ikea_api.Constants(country="de", language="de")
 
+# Stock
+stock = ikea_api.Stock(constants)
+res = ikea_api.run(stock.get_stock(item_id))
+availableCC = [p for p in res['availabilities'] if (p['availableForCashCarry'] or p['availableForClickCollect']) and p['classUnitKey']['classUnitCode'] in ['324','394','421','129']]
+if availableCC:
+    telegram_bot_sendtext(f"🎉 Available CashCarry,ClickCollect: https://www.ikea.com/de/de/search/products/?q=${item_id}")
+
 token_endpoint = ikea_api.Auth(constants).get_guest_token()
 
 token = ikea_api.run(token_endpoint)
