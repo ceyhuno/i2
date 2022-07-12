@@ -1,7 +1,7 @@
 on:
   push:
     branches: [ "main" ]
- schedule:
+  schedule:
      - cron: "*/30 * * * *"
 jobs:
   build:
