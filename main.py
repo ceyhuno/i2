@@ -60,7 +60,7 @@ parsed_data = parse_delivery_services(
 available = [p for p in parsed_data if p.is_available == True]
 
 home = [p for p in available if "HOME_DELIVERY" in p.type]
-collect = [p for p in available if "CLICK_COLLECT_STORE" in p.type]
+collect = [p for p in available if "CLICK_COLLECT_STORE" in p.type and p.service_provider in ['STO324@IKEASTORE.DE','STO394@IKEASTORE.DE','STO421@IKEASTORE.DE','STO129@IKEASTORE.DE',]]
 
 if home or collect:
     telegram_bot_sendtext(f"🎉 Available: https://www.ikea.com/de/de/search/products/?q=${item_id}")
